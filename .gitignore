@@ -1,0 +1,46 @@
+# Gradle files
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# OS Specific
+.DS_Store
+Thumbs.db
+
+# Java files
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+# IntelliJ Idea files (.iml, .idea)
+*.iml
+.idea/
+
+# NetBeans files
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code files
+.vscode/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven
+target/

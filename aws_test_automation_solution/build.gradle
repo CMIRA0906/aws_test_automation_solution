@@ -19,6 +19,7 @@ dependencies {
     // Gson library for JSON parsing
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    testImplementation 'io.rest-assured:rest-assured:4.4.0'
 
 }
 

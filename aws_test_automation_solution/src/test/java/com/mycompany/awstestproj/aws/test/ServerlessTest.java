@@ -99,10 +99,9 @@ public class ServerlessTest {
 
     @Test
     public void testSNSTopic() {
-        // Create an SNS client
+
         SnsClient sns = SnsClient.create();
 
-        // Get the ARN of the SNS topic
         String topicArn = sns.listTopics().topics().stream()
                 .filter(topic -> topic.topicArn().contains("cloudxserverless-TopicSNSTopic"))
                 .findFirst()
@@ -112,10 +111,8 @@ public class ServerlessTest {
 
         SqsClient sqs = SqsClient.create();
 
-        // List all SQS queues
         ListQueuesResponse listQueuesResponse = sqs.listQueues();
 
-        // Find a queue URL that contains the specified string
         String queueUrl = listQueuesResponse.queueUrls().stream()
                 .filter(url -> url.contains("cloudxserverless-QueueSQSQueue"))
                 .findFirst()
@@ -124,32 +121,20 @@ public class ServerlessTest {
         String queueArn = sqs.getQueueAttributes(r -> r.queueUrl(queueUrl).attributeNamesWithStrings("QueueArn"))
                 .attributes().get("QueueArn");
 
-        String queueName = queueUrl != null ? queueUrl.substring(queueUrl.lastIndexOf('/') + 1) : null;
-
-        System.out.println("what are you looking for"+queueArn  );
-
-        // Subscribe an endpoint to the SNS topic
         String subscriptionArn = sns.subscribe(r -> r.topicArn(topicArn).
                 protocol("sqs").
                 endpoint("arn:aws:sqs:eu-central-1:211125335876:cloudxserverless-QueueSQSQueueE7532512-4FsL4dCv4ZfW")).subscriptionArn();
 
-        // List the subscriptions of the SNS topic
         ListSubscriptionsByTopicResponse listSubscriptionsByTopicResponse = sns.listSubscriptionsByTopic(r -> r.topicArn(topicArn));
 
-        // Check if the endpoint is subscribed to the SNS topic
         boolean isSubscribed = listSubscriptionsByTopicResponse.subscriptions().stream()
                 .anyMatch(subscription -> subscription.subscriptionArn().equals(subscriptionArn));
         assertTrue(isSubscribed, "Endpoint is not subscribed to the SNS topic");
 
+        PublishResponse publishResponse = sns.publish(r -> r.topicArn(topicArn).message("This is a message"));
 
-
-        // Publish a message to the SNS topic
-        PublishResponse publishResponse = sns.publish(r -> r.topicArn(topicArn).message("Test message"));
-
-        // Check if the message was published
         assertNotNull(publishResponse.messageId(), "Message was not published");
 
-        // Unsubscribe the endpoint from the SNS topic
         sns.unsubscribe(r -> r.subscriptionArn(subscriptionArn));
     }
 

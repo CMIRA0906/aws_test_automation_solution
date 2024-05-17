@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class S3ImagesTest {
 
-    private static final String BASE_URL = "http://ec2-3-79-111-16.eu-central-1.compute.amazonaws.com";
+    private static final String BASE_URL = "http://ec2-18-192-126-186.eu-central-1.compute.amazonaws.com";
 
     @Test
     public void testUploadImage() {
